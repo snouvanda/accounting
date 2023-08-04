@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Accounts {
+  id             String    @id @db.VarChar(10)
+  description    String    @db.VarChar(100)
+  classification String    @db.VarChar(2) // ref: enum AccountClassification
+  category       String    @db.VarChar(2) // ref: enum AccountCategory
+  normalBalance  String    @db.VarChar(2) // ref: enum AccountNormalBalance
+  isDeprcAsset   String    @default("N") @db.VarChar(2) // ref: enum DepreciableAsset
+  remarks        String?   @db.VarChar(100)
+  createdAt      DateTime  @default(now())
+  createdBy      String    @db.VarChar(50)
+  updatedAt      DateTime? @updatedAt
+  updatedBy      String?   @db.VarChar(50)
+  deleted        DateTime?
+  deletedBy      String?   @db.VarChar(50)
+
+  Journal Journals[]
+}
+
+model Transactions {
+  id          String    @id @default(uuid()) @db.VarChar(50)
+  trxDate     DateTime  @default(now()) @db.Date
+  sqc         Int       @default(1)
+  description String    @db.VarChar(200)
+  amount      Decimal   @default(0)
+  extRef      String?   @db.VarChar(50)
+  remarks     String?   @db.VarChar(100)
+  createdAt   DateTime  @default(now())
+  createdBy   String    @db.VarChar(50)
+  updatedAt   DateTime? @updatedAt
+  updatedBy   String?   @db.VarChar(50)
+  deleted     DateTime?
+  deletedBy   String?   @db.VarChar(50)
+
+  Journal Journals[]
+}
+
+model Journals {
+  id            String    @id @default(uuid()) @db.VarChar(50)
+  transactionId String    @db.VarChar(50)
+  sqc           Int       @default(1)
+  accountId     String    @db.VarChar(10)
+  debitAmt      Decimal   @default(0)
+  creditAmt     Decimal   @default(0)
+  category      String    @db.VarChar(2) // ref: enum JournalCategory
+  extRef        String?   @db.VarChar(50)
+  remarks       String?   @db.VarChar(100)
+  createdAt     DateTime  @default(now())
+  createdBy     String    @db.VarChar(50)
+  updatedAt     DateTime? @updatedAt
+  updatedBy     String?   @db.VarChar(50)
+  deleted       DateTime?
+  deletedBy     String?   @db.VarChar(50)
+
+  Account     Accounts     @relation(fields: [accountId], references: [id])
+  Transaction Transactions @relation(fields: [transactionId], references: [id])
+}
