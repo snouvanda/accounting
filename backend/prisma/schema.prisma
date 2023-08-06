@@ -11,7 +11,9 @@ datasource db {
 }
 
 model Accounts {
-  id             String    @id @db.VarChar(10)
+  id             Int       @id @default(autoincrement())
+  code           String    @unique @db.VarChar(10) // standar account code by developer
+  alias          String    @unique @db.VarChar(10) // user defined account code
   description    String    @db.VarChar(100)
   classification String    @db.VarChar(2) // ref: enum AccountClassification
   category       String    @db.VarChar(2) // ref: enum AccountCategory
@@ -29,7 +31,7 @@ model Accounts {
 }
 
 model Transactions {
-  id          String    @id @default(uuid()) @db.VarChar(50)
+  id          Int       @id @default(autoincrement())
   trxDate     DateTime  @default(now()) @db.Date
   sqc         Int       @default(1)
   description String    @db.VarChar(200)
@@ -47,10 +49,10 @@ model Transactions {
 }
 
 model Journals {
-  id            String    @id @default(uuid()) @db.VarChar(50)
-  transactionId String    @db.VarChar(50)
+  id            Int       @id @default(autoincrement())
+  transactionId Int
   sqc           Int       @default(1)
-  accountId     String    @db.VarChar(10)
+  accountCode   String    @db.VarChar(10)
   debitAmt      Decimal   @default(0)
   creditAmt     Decimal   @default(0)
   category      String    @db.VarChar(2) // ref: enum JournalCategory
@@ -63,6 +65,6 @@ model Journals {
   deleted       DateTime?
   deletedBy     String?   @db.VarChar(50)
 
-  Account     Accounts     @relation(fields: [accountId], references: [id])
+  Account     Accounts     @relation(fields: [accountCode], references: [code])
   Transaction Transactions @relation(fields: [transactionId], references: [id])
 }

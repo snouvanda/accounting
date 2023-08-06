@@ -1,5 +1,7 @@
 export interface AccountData {
-  id: string;
+  id: number;
+  code?: string | null;
+  alias: string;
   description: string;
   classification: string;
   category: string;
