@@ -1,16 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import { merge } from "lodash";
-import { activeRowCriteria, metaFields } from "@/configs/dbRecordFilter";
-import { AccountData } from "@/types/customTypes";
-import { GetAccountBy } from "@/enums/envEnums";
+import { activeRowCriteria } from "@/configs/dbRecordFilter";
+import {
+  AccountData,
+  AccountDataForDelete,
+  AccountDataRemovable,
+} from "@/types/customTypes";
+import { AccountUniqueField as AccountUF } from "@/enums/envEnums";
 
 const prisma = new PrismaClient();
 
-export const createNewAccount = async (values: AccountData) => {
+export const repoCreateAccount = async (values: AccountData) => {
   const data: AccountData = values;
   const account = await prisma.accounts.create({
     data: {
-      id: data.id,
       code: data.code!,
       alias: data.alias,
       description: data.description,
@@ -39,7 +42,7 @@ export const createNewAccount = async (values: AccountData) => {
   return account;
 };
 
-export const getAccounts = async (): Promise<AccountData[] | {}> => {
+export const repoGetAccounts = async (): Promise<AccountData[] | {}> => {
   const accounts = await prisma.accounts.findMany({
     where: activeRowCriteria,
     select: {
@@ -59,19 +62,19 @@ export const getAccounts = async (): Promise<AccountData[] | {}> => {
   return accounts;
 };
 
-export const getAccountByField = async (
-  getBy: GetAccountBy,
+export const repoGetAccountByField = async (
+  getBy: AccountUF,
   value: number | string
 ) => {
   let target = {};
   switch (getBy) {
-    case GetAccountBy.id:
+    case AccountUF.id:
       target = { id: value };
       break;
-    case GetAccountBy.code:
+    case AccountUF.code:
       target = { code: value };
       break;
-    case GetAccountBy.alias:
+    case AccountUF.alias:
       target = { alias: value };
       break;
     default:
@@ -99,22 +102,40 @@ export const getAccountByField = async (
   return account;
 };
 
-export const updateAccountById = async (values: AccountData) => {
-  const data: AccountData = values;
+export const repoUpdateAccountById = async (
+  updateBy: AccountUF,
+  values: AccountData
+) => {
+  let reqData: AccountDataRemovable = values;
+
+  // Removing inputs
+  switch (updateBy) {
+    case AccountUF.id:
+      delete reqData["id"];
+      break;
+    case AccountUF.code:
+      delete reqData["id"];
+      delete reqData["code"];
+      break;
+    case AccountUF.alias:
+      delete reqData["id"];
+      delete reqData["code"];
+      delete reqData["alias"];
+      break;
+    default:
+      break;
+  }
+  delete reqData["createdAt"];
+  delete reqData["createdBy"];
+
+  // Commit to db
   const account = await prisma.accounts.update({
-    where: { id: data.id },
-    data: {
-      id: data.id,
-      description: data.description,
-      classification: data.classification,
-      category: data.category,
-      normalBalance: data.normalBalance,
-      isDeprcAsset: data.isDeprcAsset,
-      remarks: data.remarks,
-      updatedBy: data.updatedBy,
-    },
+    where: { id: values.id },
+    data: reqData,
     select: {
       id: true,
+      code: true,
+      alias: true,
       description: true,
       classification: true,
       category: true,
@@ -130,13 +151,13 @@ export const updateAccountById = async (values: AccountData) => {
   return account;
 };
 
-export const deleteAccountById = async (id: number, deletedBy: string) => {
+export const repoDeleteAccountById = async (values: AccountDataForDelete) => {
   const account = await prisma.accounts.update({
-    where: { id: id },
+    where: { id: values.id },
     data: {
-      deletedBy: deletedBy,
+      deletedBy: values.deletedBy,
       deleted: new Date(),
     },
   });
-  return { message: `Account with Id: ${id} deleted` };
+  return { message: `Account with Id: ${values.id} deleted` };
 };

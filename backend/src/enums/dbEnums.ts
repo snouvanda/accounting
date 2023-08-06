@@ -1,10 +1,6 @@
-export enum JournalCategory {
-  Transaction = "T",
-  Adjusting = "A",
-  Closing = "C",
-  Fixing = "F",
-  Reversing = "R",
-  Opening = "O",
+export enum AccountCategory {
+  Real = "R",
+  Nominal = "N",
 }
 
 export enum AccountClassification {
@@ -16,11 +12,6 @@ export enum AccountClassification {
   Optional = "O",
 }
 
-export enum AccountCategory {
-  Real = "R",
-  Nominal = "N",
-}
-
 export enum AccountNormalBalance {
   Debit = "D",
   Credit = "C",
@@ -30,4 +21,21 @@ export enum DepreciableAsset {
   Tangible = "T",
   Intangible = "I",
   None = "N",
+}
+
+export enum JournalCategory {
+  Transaction = "T",
+  Adjusting = "A",
+  Closing = "C",
+  Fixing = "F",
+  Reversing = "R",
+  Opening = "O",
+}
+
+export enum LookupField {
+  AccountCategory,
+  AccountClassification,
+  AccountNormalBalance,
+  DepreciableAsset,
+  JournalCategory,
 }

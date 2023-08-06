@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllTransactions,
   getTransactionById,
-} from "../controllers/transactionController";
+} from "@/controllers/transactionsController";
 
 const pathStr: string = "/transactions";
 const idStr: string = "/:id";
