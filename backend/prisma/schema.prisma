@@ -32,7 +32,7 @@ model Accounts {
 
 model Transactions {
   id          Int       @id @default(autoincrement())
-  trxDate     DateTime  @default(now()) @db.Date
+  trxDate     DateTime  @default(now())
   sqc         Int       @default(1)
   description String    @db.VarChar(200)
   amount      Decimal   @default(0)

@@ -1,6 +1,6 @@
 import express from "express";
-import home from "./homeRouter";
-import transaction from "./transactionRouter";
+import home from "@/routers/homeRouter";
+import transaction from "@/routers/transactionRouter";
 
 const router = express.Router();
 
