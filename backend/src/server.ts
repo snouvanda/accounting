@@ -4,9 +4,9 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
-import { corsOptions } from "./configs/corsOptions";
 import dotenv from "dotenv";
-import routers from "./routers";
+import routers from "@/routers";
+import { corsOptions } from "@/configs/corsOptions";
 
 dotenv.config();
 
