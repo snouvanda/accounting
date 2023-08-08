@@ -68,17 +68,37 @@ export const isAccountInputsValid = (inputs: AccountData) => {
   }
 
   // Validating: isDeprcAsset
-  const validIsDeprcAsset = () => {
-    if (inputs.isDeprcAsset in DepreciableAsset) return true;
+  const validIsDepreciableAsset = () => {
+    if (inputs.isDepreciableAsset in DepreciableAsset) return true;
   };
-  if (!validIsDeprcAsset) {
-    invalids.push("isDeprcAsset");
+  if (!validIsDepreciableAsset) {
+    invalids.push("isDepreciableAsset");
     validationState = false;
   }
 
   // Validating: remarks
+  const validRemarks = () => {
+    if (inputs.remarks) {
+      if (inputs.remarks.length >= 2 && inputs.remarks.length <= 10) {
+        return true;
+      } else return false;
+    } else return true;
+  };
+  if (!validRemarks) {
+    invalids.push("remarks");
+    validationState = false;
+  }
 
   // Validating: createdBy
+  const validCreatedBy = () => {
+    //TODO: check if user available in db or pass if done by middleware
+    // for now override to true
+    return true;
+  };
+  if (!validCreatedBy) {
+    invalids.push("createdBy");
+    validationState = false;
+  }
 
   // Return validation process
   if (validationState) {

@@ -11,21 +11,21 @@ datasource db {
 }
 
 model Accounts {
-  id             Int       @id @default(autoincrement())
-  code           String    @unique @db.VarChar(10) // standar account code by developer
-  alias          String    @unique @db.VarChar(10) // user defined account code
-  description    String    @db.VarChar(100)
-  classification String    @db.VarChar(2) // ref: enum AccountClassification
-  category       String    @db.VarChar(2) // ref: enum AccountCategory
-  normalBalance  String    @db.VarChar(2) // ref: enum AccountNormalBalance
-  isDeprcAsset   String    @default("N") @db.VarChar(2) // ref: enum DepreciableAsset
-  remarks        String?   @db.VarChar(100)
-  createdAt      DateTime  @default(now())
-  createdBy      String    @db.VarChar(50)
-  updatedAt      DateTime? @updatedAt
-  updatedBy      String?   @db.VarChar(50)
-  deleted        DateTime?
-  deletedBy      String?   @db.VarChar(50)
+  id                 Int       @id @default(autoincrement())
+  code               String    @unique @db.VarChar(10) // standar account code by developer
+  alias              String    @unique @db.VarChar(10) // user defined account code
+  description        String    @db.VarChar(100)
+  classification     String    @db.VarChar(2) // ref: enum AccountClassification
+  category           String    @db.VarChar(2) // ref: enum AccountCategory
+  normalBalance      String    @db.VarChar(2) // ref: enum AccountNormalBalance
+  isDepreciableAsset String    @default("N") @db.VarChar(2) // ref: enum DepreciableAsset
+  remarks            String?   @db.VarChar(100)
+  createdAt          DateTime  @default(now())
+  createdBy          String    @db.VarChar(50)
+  updatedAt          DateTime? @updatedAt
+  updatedBy          String?   @db.VarChar(50)
+  deleted            DateTime?
+  deletedBy          String?   @db.VarChar(50)
 
   Journal Journals[]
 }

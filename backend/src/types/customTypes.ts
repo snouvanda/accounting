@@ -6,7 +6,7 @@ export interface AccountData {
   classification: string;
   category: string;
   normalBalance: string;
-  isDeprcAsset: string;
+  isDepreciableAsset: string;
   remarks?: string;
   createdAt?: Date;
   createdBy: string;
@@ -24,7 +24,7 @@ export interface AccountDataRemovable {
   classification?: string;
   category?: string;
   normalBalance?: string;
-  isDeprcAsset?: string;
+  isDepreciableAsset?: string;
   remarks?: string;
   createdAt?: Date;
   createdBy?: string;

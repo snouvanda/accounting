@@ -60,3 +60,49 @@ export const lookupDbToApp = (
     }
   }
 };
+
+export const lookupAppToDB = (
+  lookup: LF,
+  value: string
+): string | undefined => {
+  switch (lookup) {
+    case LF.AccountCategory:
+      const idxOfCategory = Object.keys(AccountCategory).indexOf(value);
+      const valOfCategory = Object.values(AccountCategory)[idxOfCategory];
+      return valOfCategory;
+      break;
+
+    case LF.AccountClassification:
+      const idxOfClassification = Object.keys(AccountClassification).indexOf(
+        value
+      );
+      const valOfClassification = Object.values(AccountClassification)[
+        idxOfClassification
+      ];
+      return valOfClassification;
+      break;
+
+    case LF.AccountNormalBalance:
+      const idxOfNormalBalance =
+        Object.keys(AccountNormalBalance).indexOf(value);
+      const valOfNormalBalance =
+        Object.values(AccountNormalBalance)[idxOfNormalBalance];
+      return valOfNormalBalance;
+      break;
+
+    case LF.DepreciableAsset:
+      const idxOfDepreciableAsset =
+        Object.keys(DepreciableAsset).indexOf(value);
+      const valOfDepreciableAsset =
+        Object.values(DepreciableAsset)[idxOfDepreciableAsset];
+      return valOfDepreciableAsset;
+      break;
+
+    case LF.JournalCategory:
+      const idxOfJournalCategory = Object.keys(JournalCategory).indexOf(value);
+      const valOfJournalCategory =
+        Object.values(JournalCategory)[idxOfJournalCategory];
+      return valOfJournalCategory;
+      break;
+  }
+};

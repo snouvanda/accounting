@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { AccountData } from "@/types/customTypes";
 import { isAccountInputsValid } from "@/helpers/validations/accountsValidation";
+import { LookupField as LF } from "@/enums/dbEnums";
+import { lookupAppToDB, lookupDbToApp } from "@/helpers/dbLookups";
+import { repoCreateAccount } from "@/repositories/accountsRepo";
 
 /*
 Controller responsible to:
@@ -22,7 +25,7 @@ export const createAccount = async (req: Request, res: Response) => {
       !inputs.classification ||
       !inputs.category ||
       !inputs.normalBalance ||
-      !inputs.isDeprcAsset ||
+      !inputs.isDepreciableAsset ||
       !inputs.createdBy
     ) {
       return res
@@ -37,10 +40,43 @@ export const createAccount = async (req: Request, res: Response) => {
     }
 
     // 4. Transform inputs value
+    let data: AccountData = inputs;
+    data.classification = lookupAppToDB(
+      LF.AccountClassification,
+      inputs.classification
+    )!;
+    data.category = lookupAppToDB(LF.AccountCategory, inputs.category)!;
+    data.normalBalance = lookupAppToDB(
+      LF.AccountNormalBalance,
+      inputs.normalBalance
+    )!;
+    data.isDepreciableAsset = lookupAppToDB(
+      LF.DepreciableAsset,
+      inputs.isDepreciableAsset
+    )!;
 
     // 5. Create account
+    const newAccount = await repoCreateAccount(data);
 
-    // 6. Return respond
+    // 6. Transform and return respond
+    newAccount.classification = lookupDbToApp(
+      LF.AccountClassification,
+      newAccount.classification
+    )!;
+    newAccount.category = lookupDbToApp(
+      LF.AccountCategory,
+      newAccount.category
+    )!;
+    newAccount.normalBalance = lookupDbToApp(
+      LF.AccountNormalBalance,
+      newAccount.normalBalance
+    )!;
+    newAccount.isDepreciableAsset = lookupDbToApp(
+      LF.DepreciableAsset,
+      newAccount.isDepreciableAsset
+    )!;
+
+    return res.status(200).json(newAccount);
 
     //
   } catch (error) {

@@ -1,11 +1,13 @@
 import express from "express";
-import home from "@/routers/homeRouter";
-import transaction from "@/routers/transactionRouter";
+import homeR from "@/routers/homeRouter";
+import accountsR from "@/routers/accountRouter";
+import transactionsR from "@/routers/transactionRouter";
 
 const router = express.Router();
 
 export default (): express.Router => {
-  home(router);
-  transaction(router);
+  homeR(router);
+  accountsR(router);
+  transactionsR(router);
   return router;
 };
