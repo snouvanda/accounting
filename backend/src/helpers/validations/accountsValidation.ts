@@ -13,10 +13,32 @@ export const isAccountInputsValid = (inputs: AccountData) => {
   let validationState: boolean = true;
 
   // Validating: code
+  const validCode = () => {
+    if (inputs.code.length >= 2 && inputs.code.length <= 10) return true;
+  };
+  if (!validCode) {
+    invalids.push("code");
+    validationState = false;
+  }
 
   // Validating: alias
+  const validAlias = () => {
+    if (inputs.alias.length >= 2 && inputs.alias.length <= 10) return true;
+  };
+  if (!validAlias) {
+    invalids.push("alias");
+    validationState = false;
+  }
 
   // Validating: description
+  const validDescription = () => {
+    if (inputs.description.length >= 2 && inputs.description.length <= 10)
+      return true;
+  };
+  if (!validDescription) {
+    invalids.push("description");
+    validationState = false;
+  }
 
   // Validating: classification
   const validClassification = () => {
