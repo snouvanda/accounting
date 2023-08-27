@@ -3,7 +3,10 @@ import { AccountData } from "@/types/customTypes";
 import { isAccountInputsValid } from "@/helpers/validations/accountsValidation";
 import { LookupField as LF } from "@/enums/dbEnums";
 import { lookupAppToDB, lookupDbToApp } from "@/helpers/dbLookups";
-import { repoCreateAccount } from "@/repositories/accountsRepo";
+import {
+  repoCreateAccount,
+  repoGetAccounts,
+} from "@/repositories/accountsRepo";
 
 /*
 Controller responsible to:
@@ -11,6 +14,20 @@ Controller responsible to:
 - Transform specific data from request body before send to repo.
 - Transform specific data from repo before send to response body.
 */
+
+export const getAccounts = async (req: Request, res: Response) => {
+  try {
+    const accounts = await repoGetAccounts();
+    if (!accounts) {
+      return res.status(204).json({ message: "No accounts found." });
+    }
+    return res.json(accounts);
+  } catch (error) {
+    //TODO: log event
+    console.log(error);
+    return res.sendStatus(500);
+  }
+};
 
 export const createAccount = async (req: Request, res: Response) => {
   try {
