@@ -20,7 +20,7 @@ export const repoCreateAccount = async (values: AccountData) => {
       classification: data.classification,
       category: data.category,
       normalBalance: data.normalBalance,
-      isDepreciableAsset: data.isDeprcAsset,
+      isDepreciableAsset: data.isDepreciableAsset,
       remarks: data.remarks,
       createdBy: data.createdBy,
     },
